@@ -1,4 +1,4 @@
-import { getTopTeams, getTeamStatsMap, getScoutedMatchKeys, getFullyScoutedMatchKeys } from '@/app/lib/scouting-db';
+import { getTopTeams, getTeamStatsMap, getFullyScoutedMatchKeys } from '@/app/lib/scouting-db';
 import { fetchTeamMatches, fetchTeamEvents, fetchEventMatches } from '@/app/lib/tba';
 import { TeamStats } from '@/app/lib/types';
 import SearchBar from '@/app/ui/dashboard/search-bar';
@@ -61,11 +61,8 @@ export default async function Dashboard() {
     : [];
 
   // ── Phase 2: MongoDB + all event matches (parallel) ───────────────────
-  const [topTeams, scoutedKeys, fullyScoutedMatchKeys, statsMap, allEventMatches] = await Promise.all([
+  const [topTeams, fullyScoutedMatchKeys, statsMap, allEventMatches] = await Promise.all([
     getTopTeams(20).catch((): TeamStats[] => []),
-    displayEventKey
-      ? getScoutedMatchKeys(displayEventKey).catch((): string[] => [])
-      : Promise.resolve<string[]>([]),
     displayEventKey
       ? getFullyScoutedMatchKeys(displayEventKey).catch((): string[] => [])
       : Promise.resolve<string[]>([]),
@@ -127,7 +124,6 @@ export default async function Dashboard() {
           </h2>
           <EventMatches
             matches={allEventMatches}
-            scoutedKeys={scoutedKeys}
             fullyScoutedMatchKeys={fullyScoutedMatchKeys}
             myTeam={MY_TEAM}
           />

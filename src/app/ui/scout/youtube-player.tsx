@@ -15,12 +15,14 @@ interface YouTubePlayerProps {
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     YT: any;
     onYouTubeIframeAPIReady: () => void;
   }
 }
 
 export default function YouTubePlayer({ videoId, onTimeUpdate, onReady, onRegisterSeek, onRegisterPause }: YouTubePlayerProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const mountedRef = useRef(true);

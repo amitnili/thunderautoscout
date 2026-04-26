@@ -27,6 +27,7 @@ function getClientPromise(): Promise<MongoClient> {
   return client.connect();
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default { then: (...args: any[]) => getClientPromise().then(...args) } as Promise<MongoClient>;
 
 export async function getDb(): Promise<Db> {

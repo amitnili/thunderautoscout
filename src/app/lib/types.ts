@@ -75,7 +75,7 @@ export interface TBAMatch {
   actual_time: number | null;
   predicted_time: number | null; // TBA predicted time (more accurate for upcoming)
   videos: Array<{ type: 'youtube' | 'tba'; key: string }>;
-  score_breakdown: Record<string, any> | null;
+  score_breakdown: Record<string, Record<string, unknown>> | null;
 }
 
 export interface ZebraTeam {

@@ -317,7 +317,7 @@ async function detectBuzzerTimeAsync(videoPath: string, videoId: string): Promis
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<AnalyzeVideoResponse>) {
-  if (req.method !== 'POST') return res.status(405).end() as any;
+  if (req.method !== 'POST') { res.status(405).end(); return; }
 
   const parsed = RequestSchema.safeParse(req.body);
   if (!parsed.success) {

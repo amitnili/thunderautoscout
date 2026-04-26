@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import {
@@ -21,7 +21,6 @@ function defaultTiming(teamNumber: number): RobotTiming {
 
 function ScoutPageInner() {
   const params = useSearchParams();
-  const router = useRouter();
 
   // Parse URL params
   const videoId = params?.get('videoId') ?? '';

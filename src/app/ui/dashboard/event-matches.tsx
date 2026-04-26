@@ -1,12 +1,10 @@
 import Link from 'next/link';
-import { CheckIcon, PlayIcon } from '@heroicons/react/24/solid';
+import { CheckIcon } from '@heroicons/react/24/solid';
 import { TBAMatch } from '@/app/lib/types';
 import { formatMatchLabel, getYouTubeVideoId } from '@/app/lib/tba';
 
 interface EventMatchesProps {
   matches: TBAMatch[];
-  /** Array of "matchKey|alliance" strings — converted to Set inside component for O(1) lookup */
-  scoutedKeys: string[];
   /** Match keys (no alliance suffix) where all 6 robots have data */
   fullyScoutedMatchKeys: string[];
   myTeam: number;
@@ -45,39 +43,14 @@ function AllianceTeams({ teams, myTeam, alliance }: {
   );
 }
 
-function ScoutBadge({ url, alliance, scouted }: {
-  url: string | null;
-  alliance: 'red' | 'blue';
-  scouted: boolean;
-}) {
-  if (!url) {
-    return <span className="text-[10px] text-gray-700">no video</span>;
-  }
 
-  const bg = alliance === 'red' ? 'bg-red-900/40 hover:bg-red-800/50 text-red-300'
-           : 'bg-blue-900/40 hover:bg-blue-800/50 text-blue-300';
-
-  return (
-    <Link href={url}
-      aria-label={scouted ? `View scouted ${alliance} alliance` : `Scout ${alliance} alliance`}
-      className={scouted
-        ? 'flex items-center justify-center w-6 h-6 bg-green-900/40 hover:bg-green-800/50 text-green-400 rounded transition-colors'
-        : `flex items-center justify-center w-6 h-6 ${bg} rounded transition-colors`}>
-      {scouted ? <CheckIcon className="w-3 h-3" /> : <PlayIcon className="w-3 h-3" />}
-    </Link>
-  );
-}
-
-function MatchRow({ match, scoutedSet, fullyScoutedSet, myTeam }: {
+function MatchRow({ match, fullyScoutedSet, myTeam }: {
   match: TBAMatch;
-  scoutedSet: Set<string>;
   fullyScoutedSet: Set<string>;
   myTeam: number;
 }) {
   const ytId = getYouTubeVideoId(match);
-  const redScouted    = scoutedSet.has(`${match.key}|red`);
-  const blueScouted   = scoutedSet.has(`${match.key}|blue`);
-  const fullyDone     = fullyScoutedSet.has(match.key);
+  const fullyDone = fullyScoutedSet.has(match.key);
 
   const myAlliance = match.alliances.red.team_keys.includes(`frc${myTeam}`) ? 'red'
     : match.alliances.blue.team_keys.includes(`frc${myTeam}`) ? 'blue' : null;
@@ -119,8 +92,7 @@ function MatchRow({ match, scoutedSet, fullyScoutedSet, myTeam }: {
   );
 }
 
-export default function EventMatches({ matches, scoutedKeys, fullyScoutedMatchKeys, myTeam }: EventMatchesProps) {
-  const scoutedSet = new Set(scoutedKeys);
+export default function EventMatches({ matches, fullyScoutedMatchKeys, myTeam }: EventMatchesProps) {
   const fullyScoutedSet = new Set(fullyScoutedMatchKeys);
 
   if (!matches.length) {
@@ -145,7 +117,7 @@ export default function EventMatches({ matches, scoutedKeys, fullyScoutedMatchKe
     <div className="bg-[#151a27] border border-white/8 rounded-xl overflow-hidden">
       {/* Match rows grouped by level */}
       <div className="max-h-[480px] overflow-y-auto">
-        {[...groups.entries()].map(([level, lvlMatches]) => (
+        {Array.from(groups.entries()).map(([level, lvlMatches]) => (
           <div key={level}>
             {level !== 'qm' && (
               <div className="px-3 py-1 bg-white/5 border-y border-white/8">
@@ -155,7 +127,7 @@ export default function EventMatches({ matches, scoutedKeys, fullyScoutedMatchKe
               </div>
             )}
             {lvlMatches.map((m) => (
-              <MatchRow key={m.key} match={m} scoutedSet={scoutedSet} fullyScoutedSet={fullyScoutedSet} myTeam={myTeam} />
+              <MatchRow key={m.key} match={m} fullyScoutedSet={fullyScoutedSet} myTeam={myTeam} />
             ))}
           </div>
         ))}
