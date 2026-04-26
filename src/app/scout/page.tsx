@@ -135,7 +135,11 @@ function ScoutPageInner() {
 
       if (data.fallbackMode) {
         setAnalysisStatus('fallback');
-        setAnalysisError('Auto-detection is not available in this environment. Set the match start time manually.');
+        setAnalysisError(
+          data.fallbackReason === 'yt-dlp not installed'
+            ? 'Auto-detection is not available in this environment.'
+            : (data.fallbackReason ?? 'Detection unavailable.')
+        );
         setManualMode(true);
         return;
       }
@@ -403,7 +407,7 @@ function ScoutPageInner() {
                 <div className="shrink-0">
                   <div className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none mb-0.5">Match Start</div>
                   <div className="font-mono font-bold text-2xl text-green-400 leading-none">
-                    {matchStartOffset!.toFixed(1)}<span className="text-sm text-green-500/70 ml-0.5">s</span>
+                    {matchStartOffset!.toFixed(2)}<span className="text-sm text-green-500/70 ml-0.5">s</span>
                   </div>
                 </div>
                 <div className="flex gap-1.5 ml-auto shrink-0">
@@ -438,11 +442,11 @@ function ScoutPageInner() {
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Match Start</span>
                   {matchStartOffset !== null && (
-                    <span className="font-mono text-sm font-bold text-green-400">{matchStartOffset.toFixed(1)}s</span>
+                    <span className="font-mono text-sm font-bold text-green-400">{matchStartOffset.toFixed(2)}s</span>
                   )}
                 </div>
                 <input
-                  type="range" min={0} max={30} step={0.1}
+                  type="range" min={0} max={30} step={0.05}
                   disabled={!videoId}
                   value={matchStartOffset ?? currentTime}
                   onChange={(e) => {
@@ -459,8 +463,8 @@ function ScoutPageInner() {
                     onClick={() => setMatchStartOffset(currentTime)}
                     disabled={!videoId}
                     className="flex-1 bg-white/5 hover:bg-white/10 disabled:opacity-40 border border-white/10 text-white text-xs font-medium py-2 rounded-lg transition-colors min-h-[36px] cursor-pointer"
-                    aria-label={`Set match start to current video time ${currentTime.toFixed(1)}s`}>
-                    Set at {currentTime.toFixed(1)}s
+                    aria-label={`Set match start to current video time ${currentTime.toFixed(2)}s`}>
+                    Set at {currentTime.toFixed(2)}s
                   </button>
                   <button
                     onClick={() => { setManualMode(false); handleAutoDetect(); }}
@@ -474,8 +478,8 @@ function ScoutPageInner() {
                   <button
                     onClick={() => { setMatchStartOffset(detectedOffset); setManualMode(false); }}
                     className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
-                    aria-label={`Back to auto-detected value ${detectedOffset.toFixed(1)}s`}>
-                    <ArrowLeftIcon className="w-3 h-3 shrink-0" />Back to detected ({detectedOffset.toFixed(1)}s)
+                    aria-label={`Back to auto-detected value ${detectedOffset.toFixed(2)}s`}>
+                    <ArrowLeftIcon className="w-3 h-3 shrink-0" />Back to detected ({detectedOffset.toFixed(2)}s)
                   </button>
                 )}
               </div>

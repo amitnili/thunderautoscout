@@ -72,7 +72,7 @@ function TeamRow({
       <div className="flex items-center gap-1 sm:gap-1.5 flex-1">
         <span className="hidden sm:inline text-[9px] text-gray-600 uppercase tracking-wider">avg</span>
         <span className={`font-mono font-bold text-sm ${timeColor(avg)}`}>
-          {avg !== null ? `${avg.toFixed(1)}s` : '—'}
+          {avg !== null ? `${avg.toFixed(2)}s` : '—'}
         </span>
       </div>
 
@@ -80,7 +80,7 @@ function TeamRow({
       <div className="hidden sm:flex items-center gap-1.5">
         <span className="text-[9px] text-gray-600 uppercase tracking-wider">best</span>
         <span className={`font-mono text-sm ${best !== null ? 'text-green-400 font-semibold' : 'text-gray-700'}`}>
-          {best !== null ? `${best.toFixed(1)}s` : '—'}
+          {best !== null ? `${best.toFixed(2)}s` : '—'}
         </span>
       </div>
     </div>

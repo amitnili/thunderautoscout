@@ -85,13 +85,13 @@ function ComparePageInner() {
                           </Link>
                         </td>
                         <td className="py-2 pr-6 text-right font-mono text-green-400 font-bold">
-                          {t.avgTimeToMiddle !== null ? `${t.avgTimeToMiddle.toFixed(1)}s` : '—'}
+                          {t.avgTimeToMiddle !== null ? `${t.avgTimeToMiddle.toFixed(2)}s` : '—'}
                         </td>
                         <td className="py-2 pr-6 text-right font-mono text-gray-300">
-                          {t.fastestTime !== null ? `${t.fastestTime.toFixed(1)}s` : '—'}
+                          {t.fastestTime !== null ? `${t.fastestTime.toFixed(2)}s` : '—'}
                         </td>
                         <td className="py-2 pr-6 text-right font-mono text-gray-500">
-                          {t.slowestTime !== null ? `${t.slowestTime.toFixed(1)}s` : '—'}
+                          {t.slowestTime !== null ? `${t.slowestTime.toFixed(2)}s` : '—'}
                         </td>
                         <td className="py-2 text-right text-gray-400">{t.matchesScoutedCount}</td>
                       </tr>

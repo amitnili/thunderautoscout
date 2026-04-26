@@ -32,10 +32,10 @@ export default function TopTeamsTable({ teams }: { teams: TeamStats[] }) {
                 </Link>
               </td>
               <td className="py-2 pr-4 text-right font-mono text-green-400 font-bold">
-                {t.avgTimeToMiddle !== null ? `${t.avgTimeToMiddle.toFixed(1)}s` : '—'}
+                {t.avgTimeToMiddle !== null ? `${t.avgTimeToMiddle.toFixed(2)}s` : '—'}
               </td>
               <td className="py-2 pr-4 text-right font-mono text-gray-300">
-                {t.fastestTime !== null ? `${t.fastestTime.toFixed(1)}s` : '—'}
+                {t.fastestTime !== null ? `${t.fastestTime.toFixed(2)}s` : '—'}
               </td>
               <td className="py-2 text-right text-gray-400">{t.matchesScoutedCount}</td>
             </tr>

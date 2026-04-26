@@ -90,7 +90,7 @@ export default function MatchRow({
       <div className="shrink-0 w-20 text-right">
         {scoutedRobot?.timeToMiddle !== null && scoutedRobot?.timeToMiddle !== undefined ? (
           <span className="text-green-400 font-mono text-sm font-bold">
-            {scoutedRobot.timeToMiddle.toFixed(1)}s
+            {scoutedRobot.timeToMiddle.toFixed(2)}s
           </span>
         ) : scoutingRecord ? (
           <span className="text-gray-600 text-xs">no time</span>

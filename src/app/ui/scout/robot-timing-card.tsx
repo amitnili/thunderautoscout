@@ -5,7 +5,6 @@ import { ZONE_LABEL } from '@/app/lib/constants';
 import {
   PlayIcon,
   XMarkIcon,
-  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
@@ -44,12 +43,8 @@ export default function RobotTimingCard({
 
   /** Match-relative time: video time minus match start offset, clamped to 0 */
   const matchRelativeTime = matchStartOffset !== null
-    ? Math.max(0, Math.round((currentVideoTime - matchStartOffset) * 10) / 10)
-    : Math.round(currentVideoTime * 10) / 10;
-
-  function handleMark() {
-    onUpdate({ timeToMiddle: matchRelativeTime, analysisMethod: 'manual' });
-  }
+    ? Math.max(0, Math.round((currentVideoTime - matchStartOffset) * 100) / 100)
+    : Math.round(currentVideoTime * 100) / 100;
 
   function handleSlider(e: React.ChangeEvent<HTMLInputElement>) {
     const t = parseFloat(e.target.value);
@@ -91,29 +86,19 @@ export default function RobotTimingCard({
       <div className={`flex items-center gap-1.5 px-2 py-1 flex-1 min-w-0 ${cardBg}`}>
         <span className={`font-bold text-xs w-10 shrink-0 ${allianceColor}`}>{teamNumber}</span>
         {isSet
-          ? <span className="font-mono text-xs text-green-400 w-[3rem] shrink-0 font-bold">
-              {timing.timeToMiddle!.toFixed(1)}s
+          ? <span className="font-mono text-xs text-green-400 w-[3.5rem] shrink-0 font-bold">
+              {timing.timeToMiddle!.toFixed(2)}s
             </span>
-          : <span className="w-[3rem] shrink-0" />
+          : <span className="w-[3.5rem] shrink-0" />
         }
         <input
-          type="range" min={0} max={20} step={0.1}
+          type="range" min={0} max={20} step={0.05}
           value={isSet ? timing.timeToMiddle! : matchRelativeTime}
           onChange={handleSlider}
           className={`flex-1 cursor-pointer ${isSet ? 'accent-green-500' : 'accent-gray-500'}`}
           style={{ touchAction: 'none' }}
           aria-label={`Set time for team ${teamNumber}`}
         />
-        <button
-          onClick={handleMark}
-          className="shrink-0 bg-white/8 hover:bg-white/12 text-white text-[10px] px-2 py-1 rounded transition-colors border border-white/10 min-w-[48px] min-h-[28px] font-mono"
-          aria-label={`Mark team ${teamNumber} at current time`}
-        >
-          {matchRelativeTime.toFixed(1)}s
-          {matchStartOffset === null && (
-            <ExclamationTriangleIcon className="w-3 h-3 text-yellow-500 inline ml-0.5 align-text-bottom" aria-label="Match start not set" />
-          )}
-        </button>
         {isSet && (
           <button
             onClick={handleClear}
@@ -168,7 +153,7 @@ export default function RobotTimingCard({
             {isSet && (
               <>
                 <span className="font-mono font-bold text-green-400 text-base tabular-nums leading-none shrink-0">
-                  {timing.timeToMiddle!.toFixed(1)}
+                  {timing.timeToMiddle!.toFixed(2)}
                   <span className="text-xs text-green-500/70 ml-0.5">s</span>
                 </span>
                 {onSeek && (
@@ -195,7 +180,7 @@ export default function RobotTimingCard({
         {/* Row 2: Slider */}
         <div className="mb-1.5">
           <input
-            type="range" min={0} max={20} step={0.1}
+            type="range" min={0} max={20} step={0.05}
             value={isSet ? timing.timeToMiddle! : matchRelativeTime}
             onChange={handleSlider}
             className={`w-full cursor-pointer ${isSet ? 'accent-green-500' : 'accent-gray-500'}`}
@@ -207,21 +192,11 @@ export default function RobotTimingCard({
           </div>
         </div>
 
-        {/* Row 3: Mark + DNA */}
+        {/* Row 3: DNA */}
         <div className="flex items-center gap-1.5">
           <button
-            onClick={handleMark}
-            className="flex-1 bg-white/5 hover:bg-white/10 active:bg-white/3 border border-white/10 text-white text-xs font-medium py-1.5 rounded-lg transition-colors min-h-[32px] font-mono cursor-pointer"
-            aria-label={`Mark team ${teamNumber} at ${ZONE_LABEL} at current time ${matchRelativeTime.toFixed(1)}s`}
-          >
-            Mark at {matchRelativeTime.toFixed(1)}s
-            {matchStartOffset === null && (
-              <ExclamationTriangleIcon className="w-3 h-3 text-yellow-500 inline ml-1 align-text-bottom" aria-label="Match start not set — time may be inaccurate" />
-            )}
-          </button>
-          <button
             onClick={handleDna}
-            className="shrink-0 text-gray-600 hover:text-gray-300 border border-white/8 hover:border-white/20 text-[10px] font-bold px-2 py-1.5 rounded-lg transition-colors min-h-[32px] cursor-pointer tracking-wide"
+            className="w-full text-gray-600 hover:text-gray-300 border border-white/8 hover:border-white/20 text-[10px] font-bold px-2 py-1.5 rounded-lg transition-colors min-h-[32px] cursor-pointer tracking-wide"
             aria-label={`Mark team ${teamNumber} as did not arrive at center`}
           >
             DNA
@@ -247,7 +222,7 @@ export default function RobotTimingCard({
         {isSet && (
           <div className="flex items-center gap-1.5">
             <span className="font-mono font-bold text-green-400 text-base tabular-nums">
-              {timing.timeToMiddle!.toFixed(1)}s
+              {timing.timeToMiddle!.toFixed(2)}s
             </span>
             {onSeek && (
               <button
@@ -265,7 +240,7 @@ export default function RobotTimingCard({
       {/* Slider */}
       <div className="mb-1.5">
         <input
-          type="range" min={0} max={20} step={0.1}
+          type="range" min={0} max={20} step={0.05}
           value={isSet ? timing.timeToMiddle! : matchRelativeTime}
           onChange={handleSlider}
           className={`w-full cursor-pointer ${isSet ? 'accent-green-500' : 'accent-gray-500'}`}
@@ -278,18 +253,8 @@ export default function RobotTimingCard({
       </div>
 
       {/* Actions row */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={handleMark}
-          className="flex-1 bg-white/8 hover:bg-white/12 active:bg-white/5 text-white text-xs font-medium py-1.5 rounded-lg transition-colors border border-white/10 min-h-[32px] font-mono cursor-pointer"
-          aria-label={`Mark team ${teamNumber} at ${ZONE_LABEL} at current time`}
-        >
-          {matchRelativeTime.toFixed(1)}s
-          {matchStartOffset === null && (
-            <ExclamationTriangleIcon className="w-3 h-3 text-yellow-500 inline ml-1 align-text-bottom" aria-label="Match start not set" />
-          )}
-        </button>
-        {isSet && (
+      {isSet && (
+        <div className="flex items-center gap-2">
           <button
             onClick={handleClear}
             className="flex items-center text-xs text-gray-600 hover:text-gray-400 transition-colors px-1 min-h-[32px] cursor-pointer"
@@ -297,8 +262,8 @@ export default function RobotTimingCard({
           >
             <XMarkIcon className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
