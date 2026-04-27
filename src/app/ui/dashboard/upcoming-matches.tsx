@@ -53,14 +53,14 @@ function TeamRow({
 
   return (
     <div
-      className={`flex items-center gap-1.5 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg min-h-[40px] transition-colors ${
+      className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg min-h-[40px] transition-colors ${
         isMyTeam ? 'bg-yellow-900/20 border border-yellow-600/30' : 'hover:bg-white/4'
       }`}
     >
-      {/* Team number */}
+      {/* Team number — wide enough for ★2630 */}
       <Link
         href={`/teams/${teamNumber}`}
-        className={`font-bold text-sm w-10 sm:w-12 shrink-0 hover:underline ${
+        className={`font-bold text-sm w-12 shrink-0 hover:underline ${
           isMyTeam ? 'text-yellow-300' : 'text-white hover:text-green-400'
         }`}
       >
@@ -68,16 +68,30 @@ function TeamRow({
         {teamNumber}
       </Link>
 
-      {/* Avg */}
-      <div className="flex items-center gap-1 sm:gap-1.5 flex-1">
-        <span className="hidden sm:inline text-[9px] text-gray-600 uppercase tracking-wider">avg</span>
+      {/* Mobile: stacked avg + best with labels */}
+      <div className="flex sm:hidden flex-1 justify-end gap-3">
+        <div className="flex flex-col items-end gap-0.5">
+          <span className="text-[8px] text-gray-600 uppercase tracking-wider leading-none">avg</span>
+          <span className={`font-mono font-bold text-xs ${timeColor(avg)}`}>
+            {avg !== null ? `${avg.toFixed(2)}s` : '—'}
+          </span>
+        </div>
+        <div className="flex flex-col items-end gap-0.5">
+          <span className="text-[8px] text-gray-600 uppercase tracking-wider leading-none">best</span>
+          <span className={`font-mono text-xs ${best !== null ? 'text-green-400 font-semibold' : 'text-gray-700'}`}>
+            {best !== null ? `${best.toFixed(2)}s` : '—'}
+          </span>
+        </div>
+      </div>
+
+      {/* Desktop: side-by-side with labels */}
+      <div className="hidden sm:flex items-center gap-1.5 flex-1">
+        <span className="text-[9px] text-gray-600 uppercase tracking-wider">avg</span>
         <span className={`font-mono font-bold text-sm ${timeColor(avg)}`}>
           {avg !== null ? `${avg.toFixed(2)}s` : '—'}
         </span>
       </div>
-
-      {/* Best — hidden on small screens */}
-      <div className="hidden sm:flex items-center gap-1.5">
+      <div className="hidden sm:flex items-center gap-1.5 shrink-0">
         <span className="text-[9px] text-gray-600 uppercase tracking-wider">best</span>
         <span className={`font-mono text-sm ${best !== null ? 'text-green-400 font-semibold' : 'text-gray-700'}`}>
           {best !== null ? `${best.toFixed(2)}s` : '—'}
